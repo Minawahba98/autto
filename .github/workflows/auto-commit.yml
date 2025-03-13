@@ -1,7 +1,7 @@
 name: Auto Commit
 on:
   schedule:
-    - cron: '0 12 * * *'  # Runs daily at 12 PM UTC
+- cron: '*/1 * * * *'  # Runs every minute
   workflow_dispatch:  # Allows manual execution
 
 jobs:

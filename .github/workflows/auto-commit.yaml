@@ -1,7 +1,8 @@
 name: Auto Commit
+
 on:
   schedule:
-- cron: '*/1 * * * *'  # Runs every minute
+    - cron: "*/1 * * * *"  # Runs every minute for testing
   workflow_dispatch:  # Allows manual execution
 
 jobs:
@@ -9,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Update Log File
         run: echo "$(date)" >> log.txt  # Appends the current date to log.txt
@@ -18,3 +19,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "minaadelbis2019@gmail.com"
+          git add .
+          git commit -m "Auto commit: $(date)"
+          git push

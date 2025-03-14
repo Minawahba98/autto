@@ -2,10 +2,10 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # Runs every hour
+    - cron: "*/1 * * * *"  # Runs every minute
   push:
     branches:
-      - main  # Change this if your branch is different
+      - main  # Change if your branch is different
 
 jobs:
   auto-commit:
@@ -22,13 +22,13 @@ jobs:
 
       - name: Make Changes
         run: |
-          echo "Auto Commit: $(date)" >> update.log
+          echo "Auto Commit: $(date)" >> log.txt
 
       - name: Commit and Push
-  env:
-    GH_PAT: ${{ secrets.GH_PAT }}
-  run: |
-    git add .
-    git commit -m "Auto commit - $(date)" || echo "No changes to commit"
-    git push https://$GH_PAT@github.com/Minawahba98/autto.git main
-
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git pull origin main --rebase  # Prevent conflicts
+          git add .
+          git commit -m "Auto commit - $(date)" || echo "No changes to commit"
+          git push https://$GH_PAT@github.com/Minawahba98/autto.git main

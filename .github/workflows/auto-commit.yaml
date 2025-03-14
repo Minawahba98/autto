@@ -25,20 +25,20 @@ jobs:
           echo "Auto Commit: $(date)" >> log.txt
 
       - name: Commit and Push
-  env:
-    GH_PAT: ${{ secrets.GH_PAT }}
-  run: |
-    git add .
-    git commit -m "Auto commit - $(date)" || echo "No changes to commit"
-    
-    # Stash uncommitted changes if they exist
-    git stash
-    
-    # Pull the latest changes safely
-    git pull origin main --rebase
-    
-    # Apply stashed changes (if any)
-    git stash pop || echo "No stashed changes to apply"
-    
-    # Push changes
-    git push https://$GH_PAT@github.com/Minawahba98/autto.git main
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git add .
+          git commit -m "Auto commit - $(date)" || echo "No changes to commit"
+
+          # Stash uncommitted changes if they exist
+          git stash || echo "No changes to stash"
+
+          # Pull the latest changes safely
+          git pull origin main --rebase
+
+          # Apply stashed changes (if any)
+          git stash pop || echo "No stashed changes to apply"
+
+          # Push changes using GitHub token
+          git push "https://$GH_PAT@github.com/Minawahba98/autto.git" main

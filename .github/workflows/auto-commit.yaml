@@ -25,9 +25,10 @@ jobs:
           echo "Auto Commit: $(date)" >> update.log
 
       - name: Commit and Push
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          git add .
-          git commit -m "Auto commit - $(date)" || echo "No changes to commit"
-          git push https://$GH_PAT@github.com/Minawahba98 /autto.git
+  env:
+    GH_PAT: ${{ secrets.GH_PAT }}
+  run: |
+    git add .
+    git commit -m "Auto commit - $(date)" || echo "No changes to commit"
+    git push https://$GH_PAT@github.com/Minawahba98/autto.git main
+

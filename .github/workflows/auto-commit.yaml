@@ -11,16 +11,25 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # Prevents conflicts with GitHub token
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "minaadelbis2019@gmail.com"
+
+      - name: Pull Latest Changes
+        run: |
+          git pull origin main --rebase || echo "No changes to pull"
 
       - name: Update Log File
         run: echo "$(date)" >> log.txt  # Appends the current date to log.txt
 
       - name: Commit and Push Changes
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "minaadelbis2019@gmail.com"
           git add .
           git commit -m "Auto commit: $(date)" || echo "No changes to commit"
-          git push
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

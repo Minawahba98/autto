@@ -2,7 +2,7 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # Runs every minute for testing
+    - cron: "*/1 * * * *"  # Runs every 1 minute for testing (change to "0 0 * * *" for daily runs)
   workflow_dispatch:  # Allows manual execution
 
 jobs:
@@ -20,5 +20,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "minaadelbis2019@gmail.com"
           git add .
-          git commit -m "Auto commit: $(date)"
+          git commit -m "Auto commit: $(date)" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,7 +2,7 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # Runs every 1 minute for testing (change to "0 0 * * *" for daily runs)
+    - cron: "*/5 * * * *"  # Runs every 5 minutes
   workflow_dispatch:  # Allows manual execution
 
 jobs:
@@ -10,26 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          persist-credentials: false  # Prevents conflicts with GitHub token
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Configure Git
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "minaadelbis2019@gmail.com"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@github.com"
 
       - name: Pull Latest Changes
-        run: |
-          git pull origin main --rebase || echo "No changes to pull"
-
-      - name: Update Log File
-        run: echo "$(date)" >> log.txt  # Appends the current date to log.txt
+        run: git pull origin main || true
 
       - name: Commit and Push Changes
         run: |
+          echo "$(date)" >> log.txt  # Append timestamp to log.txt
           git add .
-          git commit -m "Auto commit: $(date)" || echo "No changes to commit"
+          git commit -m "Auto commit: $(date -u)" || exit 0
           git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,7 +2,7 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "*/3 * * * *"  # Runs every 3 minutes
+    - cron: "0 */4 * * *"
   push:
     branches:
       - main
